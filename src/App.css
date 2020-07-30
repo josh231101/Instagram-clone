@@ -5,10 +5,15 @@
   background-color: #fafafa;
 }
 .app__header{
+  display: flex;
+  justify-content: space-between;
   background-color: white;
   padding: 20px;
   object-fit: contain;
   border-bottom : 1px solid lightgray;
+}
+.app__headerImage{
+  object-fit: contain;
 }
 .app__signup{
   display : flex;
