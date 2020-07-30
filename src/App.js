@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import Post from "./Post" 
-import {db} from "./firebase";
+import {db ,auth} from "./firebase";
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from "@material-ui/core/Modal";
-import Button from "@material-ui/core/Button";
+import {Button,Input} from "@material-ui/core";
 
 /**MATERIAL UI STYLES */
 function getModalStyle() {
@@ -28,13 +28,38 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }));
-
+/**END OF MODAL STYLING */
 
 function App() {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle)
   const [posts,setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openSignIn, setOpenSignIn] = useState(false)
+  /*LOGIN HOOKS */
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  /*AUTH HOOK*/
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if(authUser){
+        //user has logged in...
+        setUser(authUser)
+      }else{
+        //user has logged out...
+        setUser(null)
+      }
+    })
+
+    return () => {
+      //perform some cleanup actions
+      unsubscribe()
+    }
+
+  },[user,username])
 
   //useEffect : Runs a specific code based on a specific condition
   useEffect(() => {
@@ -46,6 +71,26 @@ function App() {
     })
     
   },[])
+  
+  const signUp = (event) => {
+      event.preventDefault();
+    
+      //AUTH and user from firebase
+      auth.createUserWithEmailAndPassword(email,password)
+      .then((authUser) =>{
+        return authUser.user.updateProfile({displayName : username})
+      })
+      .catch((err) => alert(err.message))
+      //Close the modal
+      setOpen(false)
+  }
+  const signIn = (event) => {
+    event.preventDefault();
+    auth.signInWithEmailAndPassword(email,password)
+    .catch((error) => alert(error.message))
+
+    setOpenSignIn(false)
+  }
 
 
   return (
@@ -55,8 +100,66 @@ function App() {
         onClose={ ()=> setOpen(false)}
       >
         <div style={modalStyle} className={classes.paper}>
-        <h2 id="simple-modal-title">Text in a modal</h2>
-       
+          <center>
+            <img 
+            className="app__headerImage"
+            src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+            alt="Instagram logo"
+            />
+          </center>
+          <form className="app__signup">
+            <Input 
+              placeholder="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Input 
+              placeholder="email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input 
+              placeholder="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button onClick={signUp}> Sign Up!</Button>
+          </form>
+          
+        </div>
+      </Modal>
+
+      <Modal
+        open={openSignIn}
+        onClose={ ()=> setOpenSignIn(false)}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <center>
+            <img 
+            className="app__headerImage"
+            src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+            alt="Instagram logo"
+            />
+          </center>
+          <form className="app__signup">
+            <Input 
+              placeholder="email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input 
+              placeholder="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button onClick={signIn}> Sign In!</Button>
+          </form>
+          
         </div>
       </Modal>
 
@@ -67,7 +170,14 @@ function App() {
           alt="Instagram logo"
         />
       </div>
-      <Button onClick={() => setOpen(true)}>Sign Up</Button>
+      {user ? (
+        <Button onClick={() => auth.signOut()}>Logut</Button>
+      ) : (
+        <div className="app__loginContainer">
+          <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+          <Button onClick={() => setOpen(true)}>Sign Up</Button>
+        </div>
+      )}
     
       {posts.map(({id,post}) => (
         <Post 
