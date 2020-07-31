@@ -3,6 +3,7 @@
     max-width: 500px;
     border: 1px solid lightgray;
     margin-bottom: 45px;
+    border-radius: 5px;
 }
 .post__image{
     width: 100%;
@@ -22,6 +23,9 @@
     margin-right: 10px;
 }
 .post__text{
+    padding: 10px 20px 0;
+}
+.post__comment{
     padding: 20px;
 }
 .post__commentBox{
@@ -42,4 +46,21 @@
     border-top: 1px solid lightgray;
 
 
+}
+
+.post__icons{
+    display: flex;
+    align-items: center;
+    padding:  6px 20px 0;
+}
+.post__iconsLeft{
+    flex : 1
+}
+.post__iconsRight{
+    flex: 0;
+}
+.icon{
+    margin-right: 6px;
+    font-weight: 100;
+    font-size: 50;
 }

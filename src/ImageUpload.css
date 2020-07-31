@@ -1,13 +1,57 @@
 .imageupload{
     display : flex;
     flex-direction : column;
-    width: 60%;
-    justify-content: center;
+    width: 80%;
+    border-radius: 5px;
     margin: 10px 0;
     margin-right: auto;
+    padding: 10%;
     margin-left: auto;
+    border: 1px solid lightgray;
 }
 
+
+.button__upload{
+    margin-top: 1rem;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    font-size: 1.4rem;
+    background: rgb(131,58,180);
+    background: linear-gradient(200deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+    padding : 2%;
+}
 .imageupload__progress{
+    height: 50px;    
     width: 100%;
+    margin-top: 1rem;
+    background: lightgray;
+    border-radius: 5px;
+}
+.imageupload > input{
+    margin-top: 1rem;
+    border-radius: 5px;
+}
+progress::-webkit-progress-value {
+    background: rgb(131,58,180);
+    background: linear-gradient(200deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+}
+  
+progress::-moz-progress-bar {
+    background: rgb(131,58,180);
+    background: linear-gradient(200deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+}
+  
+progress::-webkit-progress-value {
+    background: rgb(131,58,180);
+    background: linear-gradient(200deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+}
+  
+progress::-webkit-progress-bar {
+    background: #fafafa;
+}
+.upload__caption{
+    padding: 3%;
+    border: 1px solid lightgray;
 }

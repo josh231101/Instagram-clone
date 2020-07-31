@@ -189,20 +189,23 @@ function App() {
      
       <div className="app__posts">
         <div className="app__postsLeft">
-        {posts.map(({id,post}) => (
-          <Post 
-            key={id}
-            postId={id}
-            username={post.username} 
-            caption={post.caption}
-            imageUrl={post.imageUrl}
-          />
-        ))}
+          
+          {user?.displayName && (<ImageUpload username={user.displayName}/>) }
+          {posts.map(({id,post}) => (
+            <Post 
+              key={id}
+              postId={id}
+              user={user}
+              username={post.username} 
+              caption={post.caption}
+              imageUrl={post.imageUrl}
+            />
+          ))}
         </div>
         <div className="app__postsRight">
           <InstagramEmbed
+            className="instagram__embed"
             url='https://www.instagram.com/p/CCkM6SBJZOs/'
-            maxWidth={320}
             hideCaption={false}
             containerTagName='div'
             protocol=''
@@ -212,14 +215,13 @@ function App() {
             onAfterRender={() => {}}
             onFailure={() => {}}
           />
+          <p className="footer__info" >Información Ayuda Prensa API Empleo Privacidad Condiciones Ubicaciones Cuentas destacadas Hashtags Idioma Español</p>
+          <p className="footer__info">© 2020 INSTAGRAM FROM FACEBOOK</p>
         </div>
       </div>
       
 
-      {user?.displayName ? ( <ImageUpload username={user.displayName}/>) 
-      : (
-        <h3>Sorry you need to login to upload</h3>
-      )}
+
 
     </div>
   );

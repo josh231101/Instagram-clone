@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import {firestore} from "firebase"
 import {db ,storage,auth} from "./firebase";
-import {Button,Input} from "@material-ui/core";
 import "./ImageUpload.css"
+
 
 function ImageUpload({username}) {
     const [caption, setCaption] = useState("");
     const [image, setImage] = useState(null);
     const [progress, setProgress] = useState(0);
+    const [progressActive, setProgressActive] = useState(false);
 
     const handleChange = (e) => {
         //If the user selected one pic or more get the first one 
@@ -19,6 +20,7 @@ function ImageUpload({username}) {
     }
     /*UPLOADING PIC AND THEN CREATING A NEW DOC ON POSTS */
     const handleUpload = () => {
+        setProgressActive(true)
         const uploadTask = storage.ref(`images/${image.name}`).put(image);
 
         uploadTask.on(
@@ -46,10 +48,11 @@ function ImageUpload({username}) {
                             imageUrl: url,
                             username: username
                         });
-
+                        setProgressActive(false)
                         setProgress(0);
                         setCaption("");
                         setImage(null);
+                        
 
                     })
 
@@ -61,12 +64,16 @@ function ImageUpload({username}) {
 
     return (
         <div className="imageupload">
-            <progress className="imageupload__progress" value={progress} max="100"/>
-            <input type="text" placeholder="Enter a caption..." onChange={(event)=> setCaption(event.target.value)} value={caption}/>
-            <input type="file" onChange={handleChange}/>
-            <Button className="button__upload" onClick={handleUpload}>
+            <h3>Make a new post</h3>
+            <input className="upload__caption" type="text" placeholder="Enter a caption..." onChange={(event)=> setCaption(event.target.value)} value={caption}/>
+            <input className="upload__fileChooser" type="file" onChange={handleChange}/>
+            {progressActive ? (
+                <progress className="imageupload__progress" value={progress} max="100"/>
+                ): (
+                <button className="button__upload" onClick={handleUpload}>
                 Upload
-            </Button>
+                </button>
+            )}
 
 
             
