@@ -16,10 +16,10 @@
     align-self: center;
   }
   .instagram_embed{
-    min-width: 500px;
+    max-width: 500px;
   }
   .app__postsRight{
-    min-width: 500px;
+    max-width: 500px;
     margin-left: 0 !important;
   }
 }
